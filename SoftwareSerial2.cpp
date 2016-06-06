@@ -65,6 +65,7 @@ static void (*ISRList[MAX_PIN+1])() = {
       sws_isr_14,
       sws_isr_15
 };
+SoftwareSerial::SoftwareSerial() {};
 
 SoftwareSerial::SoftwareSerial(int receivePin, int transmitPin, bool inverse_logic, unsigned int buffSize) {
    m_rxValid = m_txValid = m_txEnableValid = false;
