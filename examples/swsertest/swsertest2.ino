@@ -1,5 +1,5 @@
 
-#include <SoftwareSerial.h>
+#include <SoftwareSerial2.h>
 
 SoftwareSerial swSer;     //create global object
 
