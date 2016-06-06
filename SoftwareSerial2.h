@@ -37,7 +37,8 @@ class SoftwareSerial : public Stream
 public:
    SoftwareSerial(int receivePin, int transmitPin, bool inverse_logic = false, unsigned int buffSize = 64);
    ~SoftwareSerial();
-
+   
+   void attach(int receivePin, int transmitPin, bool inverse_logic = false, unsigned int buffSize = 64);
    void begin(long speed);
    void setTransmitEnablePin(int transmitEnablePin);
 
