@@ -1,9 +1,12 @@
 
 #include <SoftwareSerial.h>
 
-SoftwareSerial swSer(14, 12, false, 256);
+SoftwareSerial swSer;     //create global object
 
 void setup() {
+  byte rxPin = 14;
+  byte txPin = 12;
+  swSer.attach(rxPin, txPin, false, 256);
   Serial.begin(115200);
   swSer.begin(115200);
 
