@@ -27,7 +27,7 @@ extern "C" {
 #include "gpio.h"
 }
 
-#include <SoftwareSerial.h>
+#include <SoftwareSerial2.h>
 
 #define MAX_PIN 15
 
@@ -102,6 +102,38 @@ SoftwareSerial::~SoftwareSerial() {
 
 bool SoftwareSerial::isValidGPIOpin(int pin) {
    return (pin >= 0 && pin <= 5) || (pin >= 12 && pin <= MAX_PIN);
+}
+
+void SoftwareSerial::attach(int receivePin, int transmitPin, bool inverse_logic, unsigned int buffSize) {
+   enableRx(false);
+   if (m_rxValid)
+      ObjList[m_rxPin] = NULL;
+   if (m_buffer)
+      free(m_buffer);
+
+   m_rxValid = m_txValid = m_txEnableValid = false;
+   m_buffer = NULL;
+   m_invert = inverse_logic;
+   if (isValidGPIOpin(receivePin)) {
+      m_rxPin = receivePin;
+      m_buffSize = buffSize;
+      m_buffer = (uint8_t*)malloc(m_buffSize);
+      if (m_buffer != NULL) {
+         m_rxValid = true;
+         m_inPos = m_outPos = 0;
+         pinMode(m_rxPin, INPUT);
+         ObjList[m_rxPin] = this;
+         enableRx(true);
+      }
+   }
+   if (isValidGPIOpin(transmitPin)) {
+      m_txValid = true;
+      m_txPin = transmitPin;
+      pinMode(m_txPin, OUTPUT);
+      digitalWrite(m_txPin, !m_invert);
+   }
+   // Default speed
+   begin(9600);
 }
 
 void SoftwareSerial::begin(long speed) {
